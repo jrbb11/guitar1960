@@ -121,6 +121,17 @@ export async function createOrder(orderData: CreateOrderData) {
     const { clearCart } = await import('./cart')
     await clearCart()
 
+    // Send order confirmation email
+    try {
+        const { error: emailError } = await supabase.functions.invoke('order-email', {
+            body: { order_id: order.id }
+        })
+        if (emailError) console.error('Error sending order email:', emailError)
+    } catch (err) {
+        // Don't fail the order if email fails
+        console.error('Failed to invoke order-email function:', err)
+    }
+
     return order
 }
 

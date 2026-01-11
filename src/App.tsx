@@ -18,6 +18,8 @@ import { RegisterPage } from './pages/RegisterPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { OrderDetailPage } from './pages/OrderDetailPage';
 import { FAQPage } from './pages/FAQPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
                   <Route path="/account" element={<AccountPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                  <Route path="/reset-password" element={<ResetPasswordPage />} />
                   <Route path="/account/orders" element={<AccountPage defaultTab="orders" />} />
                   <Route path="/account/orders/:id" element={<OrderDetailPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
