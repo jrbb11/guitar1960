@@ -1,0 +1,1052 @@
+[
+    {
+        "table_name": "attribute_values",
+        "column_name": "id",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "attribute_values",
+        "column_name": "attribute_id",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "attribute_values",
+        "column_name": "value",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "attribute_values",
+        "column_name": "slug",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "attribute_values",
+        "column_name": "created_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "attribute_values",
+        "column_name": "updated_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "attribute_values",
+        "column_name": "image_url",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "attributes",
+        "column_name": "id",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "attributes",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "attributes",
+        "column_name": "slug",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "attributes",
+        "column_name": "description",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "attributes",
+        "column_name": "created_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "attributes",
+        "column_name": "updated_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "id",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "term_id",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "slug",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "description",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "parent",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "created_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "categories",
+        "column_name": "updated_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "metro_manila_cities",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "metro_manila_cities",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "metro_manila_cities",
+        "column_name": "zone_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "metro_manila_cities",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "order_id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "product_id",
+        "data_type": "integer",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "variant_id",
+        "data_type": "integer",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "product_name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "sku",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "quantity",
+        "data_type": "integer",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "unit_price",
+        "data_type": "numeric",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "subtotal",
+        "data_type": "numeric",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "total",
+        "data_type": "numeric",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "attributes",
+        "data_type": "jsonb",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_items",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_notes",
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_notes",
+        "column_name": "order_id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_notes",
+        "column_name": "note_content",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "order_notes",
+        "column_name": "note_type",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_notes",
+        "column_name": "added_by",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "order_notes",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "order_number",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "woo_order_id",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "order_date",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "paid_date",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "customer_id",
+        "data_type": "integer",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "customer_email",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "customer_note",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_first_name",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_last_name",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_company",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_email",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_phone",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_address_1",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_address_2",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_postcode",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_city",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_state",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "billing_country",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_first_name",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_last_name",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_company",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_phone",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_address_1",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_address_2",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_postcode",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_city",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_state",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_country",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_method",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "order_subtotal",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "shipping_total",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "tax_total",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "discount_total",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "order_total",
+        "data_type": "numeric",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "order_currency",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "payment_method",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "payment_method_title",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "transaction_id",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "customer_ip_address",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "customer_user_agent",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "order_key",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "orders",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "ph_cities",
+        "column_name": "code",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "ph_cities",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "ph_cities",
+        "column_name": "province_code",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "ph_cities",
+        "column_name": "zone_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "ph_provinces",
+        "column_name": "code",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "ph_provinces",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "ph_provinces",
+        "column_name": "region_code",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "ph_provinces",
+        "column_name": "zone_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "ph_regions",
+        "column_name": "code",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "ph_regions",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "ph_regions",
+        "column_name": "zone_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "product_categories",
+        "column_name": "product_id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "product_categories",
+        "column_name": "category_id",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "products",
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "products",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "products",
+        "column_name": "slug",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "products",
+        "column_name": "sku",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "description",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "price",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "regular_price",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "sale_price",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "stock_quantity",
+        "data_type": "integer",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "stock_status",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "manage_stock",
+        "data_type": "boolean",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "image_id",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "image_url",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "weight",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "length",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "width",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "height",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "created_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "updated_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "type",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "is_featured",
+        "data_type": "boolean",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "visibility",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "short_description",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "sale_starts_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "sale_ends_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "tax_status",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "tax_class",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "allow_reviews",
+        "data_type": "boolean",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "purchase_note",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "backorders_allowed",
+        "data_type": "boolean",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "sold_individually",
+        "data_type": "boolean",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "shipping_class",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "gallery_urls",
+        "data_type": "ARRAY",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "products",
+        "column_name": "size_chart",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "shipping_rates",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "shipping_rates",
+        "column_name": "zone_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "shipping_rates",
+        "column_name": "min_order_amount",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "shipping_rates",
+        "column_name": "rate",
+        "data_type": "numeric",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "shipping_rates",
+        "column_name": "free_shipping_threshold",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "shipping_rates",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "shipping_zones",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "shipping_zones",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "shipping_zones",
+        "column_name": "type",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "shipping_zones",
+        "column_name": "enabled",
+        "data_type": "boolean",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "shipping_zones",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "user_profile",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "user_profile",
+        "column_name": "full_name",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "user_profile",
+        "column_name": "email",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "user_profile",
+        "column_name": "phone",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "user_profile",
+        "column_name": "avatar_url",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "user_profile",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "user_roles",
+        "column_name": "id",
+        "data_type": "integer",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "user_roles",
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "user_roles",
+        "column_name": "role",
+        "data_type": "text",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "product_id",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "sku",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "price",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "regular_price",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "sale_price",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "stock_quantity",
+        "data_type": "integer",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "stock_status",
+        "data_type": "text",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "attributes",
+        "data_type": "jsonb",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "created_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "updated_at",
+        "data_type": "timestamp without time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "compare_at_price",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "images",
+        "data_type": "ARRAY",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "sale_starts_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "sale_ends_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "weight",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "length",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "width",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    },
+    {
+        "table_name": "variants",
+        "column_name": "height",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+    }
+]
