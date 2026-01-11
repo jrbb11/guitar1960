@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';

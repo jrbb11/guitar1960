@@ -119,8 +119,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (isAuthenticated) {
       try {
         await cartService.addToCart(
-          parseInt(product.id),
-          variant ? parseInt(variant.id) : undefined,
+          parseInt(product.id.toString(), 10),
+          variant ? parseInt(variant.id.toString(), 10) : undefined,
           quantity
         );
         await refreshCart();
@@ -150,8 +150,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       } else {
         const newItem: CartItem = {
           id: `${product.id}-${variant?.id || 'default'}-${Date.now()}`,
-          product_id: product.id,
-          variant_id: variant?.id,
+          product_id: product.id.toString(),
+          variant_id: variant?.id.toString(),
           quantity,
           added_at: new Date().toISOString(),
           product,

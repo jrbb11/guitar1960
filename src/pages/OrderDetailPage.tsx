@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Package, MapPin, CreditCard, Calendar, AlertTriangle } from 'lucide-react';
 import { getOrderById, cancelOrder } from '../services/orders';
 import { formatPrice } from '../utils/currency';
@@ -9,7 +9,6 @@ import { Modal } from '../components/common/Modal';
 
 export const OrderDetailPage = () => {
     const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
     const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
