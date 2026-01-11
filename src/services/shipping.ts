@@ -25,7 +25,7 @@ export async function getShippingRate(cityName: string): Promise<number> {
             .from('ph_cities')
             .select('zone_id')
             .ilike('name', cityName)
-            .single()
+            .maybeSingle()
 
         if (cityError || !cityData?.zone_id) {
             // Fallback: check metro_manila_cities table
@@ -33,7 +33,7 @@ export async function getShippingRate(cityName: string): Promise<number> {
                 .from('metro_manila_cities')
                 .select('zone_id')
                 .ilike('name', cityName)
-                .single()
+                .maybeSingle()
 
             if (metroError || !metroData?.zone_id) {
                 // Default to "Rest of Philippines" rate
@@ -46,7 +46,7 @@ export async function getShippingRate(cityName: string): Promise<number> {
                 .from('shipping_rates')
                 .select('rate')
                 .eq('zone_id', metroData.zone_id)
-                .single()
+                .maybeSingle()
 
             return rateData?.rate || 450.00
         }
@@ -56,7 +56,7 @@ export async function getShippingRate(cityName: string): Promise<number> {
             .from('shipping_rates')
             .select('rate')
             .eq('zone_id', cityData.zone_id)
-            .single()
+            .maybeSingle()
 
         return rateData?.rate || 450.00
 
