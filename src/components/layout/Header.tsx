@@ -84,22 +84,24 @@ export const Header = () => {
               <ChevronDown size={16} />
             </button>
             {menDropdownOpen && (
-              <div className="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg py-2 z-50">
-                <Link to="/shop?category=men&subcategory=denims" className="block px-4 py-2 hover:bg-gray-100">
-                  Denims
-                </Link>
-                <Link to="/shop?category=men&subcategory=de-hilo" className="block px-4 py-2 hover:bg-gray-100">
-                  De Hilo
-                </Link>
-                <Link to="/shop?category=men&subcategory=underwear" className="block px-4 py-2 hover:bg-gray-100">
-                  Men's Underwear
-                </Link>
-                <Link to="/shop?category=men&subcategory=polo-shirt" className="block px-4 py-2 hover:bg-gray-100">
-                  Polo Shirt
-                </Link>
-                <Link to="/shop?category=men&subcategory=apparel" className="block px-4 py-2 hover:bg-gray-100">
-                  Men's Apparel
-                </Link>
+              <div className="absolute top-full left-0 pt-2 w-56 z-50">
+                <div className="bg-white shadow-lg rounded-lg py-2 border border-gray-100">
+                  <Link to="/shop?category=men&subcategory=denims" className="block px-4 py-2 hover:bg-gray-100">
+                    Denims
+                  </Link>
+                  <Link to="/shop?category=men&subcategory=de-hilo" className="block px-4 py-2 hover:bg-gray-100">
+                    De Hilo
+                  </Link>
+                  <Link to="/shop?category=men&subcategory=underwear" className="block px-4 py-2 hover:bg-gray-100">
+                    Men's Underwear
+                  </Link>
+                  <Link to="/shop?category=men&subcategory=polo-shirt" className="block px-4 py-2 hover:bg-gray-100">
+                    Polo Shirt
+                  </Link>
+                  <Link to="/shop?category=men&subcategory=apparel" className="block px-4 py-2 hover:bg-gray-100">
+                    Men's Apparel
+                  </Link>
+                </div>
               </div>
             )}
           </div>
@@ -115,22 +117,24 @@ export const Header = () => {
               <ChevronDown size={16} />
             </button>
             {ladiesDropdownOpen && (
-              <div className="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg py-2 z-50">
-                <Link to="/shop?category=ladies&subcategory=denims" className="block px-4 py-2 hover:bg-gray-100">
-                  Denims
-                </Link>
-                <Link to="/shop?category=ladies&subcategory=de-hilo" className="block px-4 py-2 hover:bg-gray-100">
-                  De Hilo
-                </Link>
-                <Link to="/shop?category=ladies&subcategory=underwear" className="block px-4 py-2 hover:bg-gray-100">
-                  Ladies Underwear
-                </Link>
-                <Link to="/shop?category=ladies&subcategory=polo-shirt" className="block px-4 py-2 hover:bg-gray-100">
-                  Polo Shirt
-                </Link>
-                <Link to="/shop?category=ladies&subcategory=apparel" className="block px-4 py-2 hover:bg-gray-100">
-                  Ladies Apparel
-                </Link>
+              <div className="absolute top-full left-0 pt-2 w-56 z-50">
+                <div className="bg-white shadow-lg rounded-lg py-2 border border-gray-100">
+                  <Link to="/shop?category=ladies&subcategory=denims" className="block px-4 py-2 hover:bg-gray-100">
+                    Denims
+                  </Link>
+                  <Link to="/shop?category=ladies&subcategory=de-hilo" className="block px-4 py-2 hover:bg-gray-100">
+                    De Hilo
+                  </Link>
+                  <Link to="/shop?category=ladies&subcategory=underwear" className="block px-4 py-2 hover:bg-gray-100">
+                    Ladies Underwear
+                  </Link>
+                  <Link to="/shop?category=ladies&subcategory=polo-shirt" className="block px-4 py-2 hover:bg-gray-100">
+                    Polo Shirt
+                  </Link>
+                  <Link to="/shop?category=ladies&subcategory=apparel" className="block px-4 py-2 hover:bg-gray-100">
+                    Ladies Apparel
+                  </Link>
+                </div>
               </div>
             )}
           </div>

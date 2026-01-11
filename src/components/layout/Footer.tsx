@@ -45,6 +45,7 @@ export const Footer = () => {
             <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
               <li><Link to="/account/orders" className="hover:text-white">My Orders</Link></li>
               <li><Link to="/account" className="hover:text-white">Account</Link></li>
+              <li><Link to="/faq" className="hover:text-white">FAQ</Link></li>
               <li><Link to="/shipping" className="hover:text-white">Shipping</Link></li>
             </ul>
           </div>
