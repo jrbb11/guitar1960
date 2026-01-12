@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { createOrder, type CreateOrderData } from '../services/orders';
-import { getDefaultAddress, createAddress } from '../services/profiles';
+import { createAddress, getAddresses, type CustomerAddress } from '../services/profiles';
 import { getShippingRate } from '../services/shipping';
 import { formatPrice } from '../utils/currency';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import { AddressSelector } from '../components/common/AddressSelector';
-import { CreditCard, Truck, CheckCircle } from 'lucide-react';
+import { CreditCard, Truck, CheckCircle, Plus, MapPin } from 'lucide-react';
 
 export const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
@@ -18,6 +18,11 @@ export const CheckoutPage = () => {
 
   const [step, setStep] = useState<'shipping' | 'payment' | 'confirm'>('shipping');
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Saved addresses
+  const [savedAddresses, setSavedAddresses] = useState<CustomerAddress[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | 'new' | null>(null);
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(true);
 
   const [shippingInfo, setShippingInfo] = useState({
     fullName: user?.full_name || '',
@@ -33,30 +38,45 @@ export const CheckoutPage = () => {
 
   const [shippingFee, setShippingFee] = useState(0);
 
-  // Load default address on mount
+  // Load saved addresses on mount
   useEffect(() => {
-    const loadDefaultAddress = async () => {
+    const loadSavedAddresses = async () => {
       if (user) {
+        setIsLoadingAddresses(true);
         try {
-          const address = await getDefaultAddress();
-          if (address) {
+          const addresses = await getAddresses();
+          setSavedAddresses(addresses);
+
+          // Find and select default address, or first one
+          const defaultAddr = addresses.find(a => a.is_default) || addresses[0];
+          if (defaultAddr) {
+            setSelectedAddressId(defaultAddr.id);
             setShippingInfo(prev => ({
               ...prev,
-              fullName: address.full_name,
-              phone: address.phone,
-              address: address.street_address,
-              city: address.city,
-              province: address.province,
-              postalCode: address.postal_code || '',
+              fullName: defaultAddr.full_name,
+              phone: defaultAddr.phone,
+              address: defaultAddr.street_address,
+              city: defaultAddr.city,
+              province: defaultAddr.province,
+              postalCode: defaultAddr.postal_code || '',
             }));
+          } else {
+            // No saved addresses - show new address form
+            setSelectedAddressId('new');
           }
         } catch (error) {
-          console.error('Error loading default address:', error);
+          console.error('Error loading addresses:', error);
+          setSelectedAddressId('new');
+        } finally {
+          setIsLoadingAddresses(false);
         }
+      } else {
+        setIsLoadingAddresses(false);
+        setSelectedAddressId('new');
       }
     };
 
-    loadDefaultAddress();
+    loadSavedAddresses();
   }, [user]);
 
   // Update shipping fee when city changes
@@ -78,8 +98,7 @@ export const CheckoutPage = () => {
 
   const totalAmount = cart.total + shippingFee;
 
-  const handleShippingSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleShippingSubmit = () => {
     setStep('payment');
   };
 
@@ -199,64 +218,158 @@ export const CheckoutPage = () => {
             {/* Shipping Information */}
             {step === 'shipping' && (
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-bold mb-6">Shipping Information</h2>
-                <form onSubmit={handleShippingSubmit}>
+                <h2 className="text-xl font-bold mb-6">Shipping Address</h2>
+
+                {isLoadingAddresses ? (
+                  <div className="text-center py-8 text-gray-500">Loading saved addresses...</div>
+                ) : (
                   <div className="space-y-4">
-                    <Input
-                      label="Full Name"
-                      required
-                      value={shippingInfo.fullName}
-                      onChange={(e) => setShippingInfo({ ...shippingInfo, fullName: e.target.value })}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Input
-                        label="Email"
-                        type="email"
-                        required
-                        value={shippingInfo.email}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, email: e.target.value })}
-                      />
-                      <Input
-                        label="Phone"
-                        required
-                        value={shippingInfo.phone}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, phone: e.target.value })}
-                      />
-                    </div>
-                    <Input
-                      label="Street Address"
-                      required
-                      value={shippingInfo.address}
-                      onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
-                    />
-                    <AddressSelector
-                      defaultRegion="" /* We don't save region in profile yet but could optionaly add it */
-                      defaultProvince={shippingInfo.province}
-                      defaultCity={shippingInfo.city}
-                      onSelect={(addr) => {
-                        setShippingInfo(prev => ({
-                          ...prev,
-                          city: addr.city,
-                          province: addr.province,
-                          postalCode: '' // Clear postal code when city changes
-                          // Region is selected but currently shippingInfo doesn't strictly store it, which is fine
-                        }));
-                      }}
-                    />
-                    <div className="mt-4">
-                      <Input
-                        label="Postal Code (Optional)"
-                        value={shippingInfo.postalCode}
-                        onChange={(e) => setShippingInfo({ ...shippingInfo, postalCode: e.target.value })}
-                      />
+                    {/* Saved Address Cards */}
+                    {savedAddresses.length > 0 && (
+                      <div className="space-y-3">
+                        {savedAddresses.map((addr) => (
+                          <label
+                            key={addr.id}
+                            className={`block p-4 border-2 rounded-lg cursor-pointer transition-all ${selectedAddressId === addr.id
+                              ? 'border-blue-600 bg-blue-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <input
+                                type="radio"
+                                name="address"
+                                value={addr.id}
+                                checked={selectedAddressId === addr.id}
+                                onChange={() => {
+                                  setSelectedAddressId(addr.id);
+                                  setShippingInfo({
+                                    fullName: addr.full_name,
+                                    email: user?.email || '',
+                                    phone: addr.phone,
+                                    address: addr.street_address,
+                                    city: addr.city,
+                                    province: addr.province,
+                                    postalCode: addr.postal_code || '',
+                                  });
+                                }}
+                                className="mt-1"
+                              />
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-semibold">{addr.full_name}</span>
+                                  {addr.is_default && (
+                                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Default</span>
+                                  )}
+                                </div>
+                                <p className="text-sm text-gray-600">{addr.phone}</p>
+                                <p className="text-sm text-gray-600">
+                                  {addr.street_address}, {addr.city}, {addr.province}
+                                  {addr.postal_code && `, ${addr.postal_code}`}
+                                </p>
+                              </div>
+                              <MapPin size={20} className="text-gray-400 flex-shrink-0" />
+                            </div>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Add New Address Option */}
+                    <label
+                      className={`block p-4 border-2 rounded-lg cursor-pointer transition-all ${selectedAddressId === 'new'
+                        ? 'border-blue-600 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300 border-dashed'
+                        }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="address"
+                          value="new"
+                          checked={selectedAddressId === 'new'}
+                          onChange={() => {
+                            setSelectedAddressId('new');
+                            setShippingInfo({
+                              fullName: user?.full_name || '',
+                              email: user?.email || '',
+                              phone: '',
+                              address: '',
+                              city: '',
+                              province: '',
+                              postalCode: '',
+                            });
+                          }}
+                        />
+                        <Plus size={20} className="text-gray-500" />
+                        <span className="font-medium text-gray-700">Use a new address</span>
+                      </div>
+                    </label>
+
+                    {/* New Address Form (shown when 'new' is selected) */}
+                    {selectedAddressId === 'new' && (
+                      <div className="mt-4 pt-4 border-t space-y-4">
+                        <Input
+                          label="Full Name"
+                          required
+                          value={shippingInfo.fullName}
+                          onChange={(e) => setShippingInfo({ ...shippingInfo, fullName: e.target.value })}
+                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <Input
+                            label="Email"
+                            type="email"
+                            required
+                            value={shippingInfo.email}
+                            onChange={(e) => setShippingInfo({ ...shippingInfo, email: e.target.value })}
+                          />
+                          <Input
+                            label="Phone"
+                            required
+                            value={shippingInfo.phone}
+                            onChange={(e) => setShippingInfo({ ...shippingInfo, phone: e.target.value })}
+                          />
+                        </div>
+                        <Input
+                          label="Street Address"
+                          required
+                          value={shippingInfo.address}
+                          onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
+                        />
+                        <AddressSelector
+                          defaultRegion=""
+                          defaultProvince={shippingInfo.province}
+                          defaultCity={shippingInfo.city}
+                          onSelect={(addr) => {
+                            setShippingInfo(prev => ({
+                              ...prev,
+                              city: addr.city,
+                              province: addr.province,
+                              postalCode: ''
+                            }));
+                          }}
+                        />
+                        <Input
+                          label="Postal Code (Optional)"
+                          value={shippingInfo.postalCode}
+                          onChange={(e) => setShippingInfo({ ...shippingInfo, postalCode: e.target.value })}
+                        />
+                      </div>
+                    )}
+
+                    <div className="mt-6">
+                      <Button
+                        type="button"
+                        fullWidth
+                        size="lg"
+                        onClick={handleShippingSubmit}
+                        disabled={!shippingInfo.city || !shippingInfo.address || !shippingInfo.fullName}
+                      >
+                        Continue to Payment
+                      </Button>
                     </div>
                   </div>
-                  <div className="mt-6">
-                    <Button type="submit" fullWidth size="lg">
-                      Continue to Payment
-                    </Button>
-                  </div>
-                </form>
+                )}
               </div>
             )}
 
