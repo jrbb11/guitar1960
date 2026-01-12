@@ -98,18 +98,27 @@ export const ProductDetailPage = () => {
   // 3. Product gallery images
 
   const getDisplayImages = () => {
+    // Get product gallery images (excluding main image since we handle it separately)
+    const productGalleryImages = product.gallery_urls || [];
+
+    // Determine the primary/main image
+    let primaryImage: string;
+
     if (selectedVariant && selectedVariant.images && selectedVariant.images.length > 0) {
-      // If variant has specific images array
-      return selectedVariant.images;
+      // If variant has specific images, use the first one as primary
+      primaryImage = selectedVariant.images[0];
+    } else {
+      // Use product main image as primary
+      primaryImage = product.image_url || '/placeholder-product.jpg';
     }
 
-    // Fallback logic if variant uses single image_url field (custom schema) or no specific images
-    // Check if we can find an image matching the selected color from the product gallery?
-    // For now, standard behavior:
+    // Combine: variant primary image + product gallery images
+    // Filter out duplicates and empty values
+    const allImages = [primaryImage, ...productGalleryImages].filter((url, index, self) =>
+      url && self.indexOf(url) === index
+    );
 
-    const productMainImage = product.image_url || '/placeholder-product.jpg';
-    const productGallery = [productMainImage, ...(product.gallery_urls || [])].filter(url => url);
-    return productGallery.length > 0 ? productGallery : ['/placeholder-product.jpg'];
+    return allImages.length > 0 ? allImages : ['/placeholder-product.jpg'];
   };
 
   const displayImages = getDisplayImages();
