@@ -1,13 +1,21 @@
 import { Link } from 'react-router-dom';
-import { useWishlist } from '../context/WishlistContext';
-import { ProductCard } from '../components/products/ProductCard';
-import { Button } from '../components/common/Button';
 import { Heart } from 'lucide-react';
+import { useWishlist } from '../context/WishlistContext';
+import { Button } from '../components/common/Button';
+import { ProductCard } from '../components/products/ProductCard';
 
 export const WishlistPage = () => {
-    const { wishlist } = useWishlist();
+    const { wishlist, loading } = useWishlist();
 
-    if (wishlist.length === 0) {
+    if (loading) {
+        return (
+            <div className="container mx-auto px-4 py-16 text-center">
+                <div className="text-gray-500">Loading wishlist...</div>
+            </div>
+        );
+    }
+
+    if (!wishlist || wishlist.length === 0) {
         return (
             <div className="container mx-auto px-4 py-16 text-center">
                 <div className="flex justify-center mb-6">
@@ -33,8 +41,8 @@ export const WishlistPage = () => {
         <div className="container mx-auto px-4 py-12">
             <h1 className="text-3xl font-bold mb-8">My Wishlist ({wishlist.length})</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {wishlist.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                {wishlist.map((item) => item.product && (
+                    <ProductCard key={item.product.id} product={item.product} />
                 ))}
             </div>
         </div>

@@ -1,57 +1,64 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { Product } from '../types';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import type { Product, WishlistItem } from '../types';
+import { getWishlist, addToWishlist as addToWishlistAPI, removeFromWishlist as removeFromWishlistAPI } from '../services/wishlist';
+import { useAuth } from './AuthContext';
 
 interface WishlistContextType {
-    wishlist: Product[];
-    addToWishlist: (product: Product) => void;
-    removeFromWishlist: (productId: string) => void;
-    isInWishlist: (productId: string) => boolean;
-    clearWishlist: () => void;
+    wishlist: WishlistItem[];
+    addToWishlist: (product: Product) => Promise<void>;
+    removeFromWishlist: (productId: string, variantId?: string) => Promise<void>;
+    isInWishlist: (productId: string, variantId?: string) => boolean;
+    clearWishlist: () => Promise<void>;
     wishlistCount: number;
+    loading: boolean;
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [wishlist, setWishlist] = useState<Product[]>([]);
+    const { user } = useAuth();
+    const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+    const [loading, setLoading] = useState(false);
 
-    // Load from localStorage on mount
+    // Load wishlist from Supabase on mount or when user changes
     useEffect(() => {
-        const savedWishlist = localStorage.getItem('wishlist');
-        if (savedWishlist) {
-            try {
-                setWishlist(JSON.parse(savedWishlist));
-            } catch (error) {
-                console.error('Failed to parse wishlist from localStorage', error);
-            }
+        if (!user) {
+            setWishlist([]);
+            return;
         }
-    }, []);
+        setLoading(true);
+        getWishlist(user.id)
+            .then((items) => setWishlist(items))
+            .finally(() => setLoading(false));
+    }, [user]);
 
-    // Save to localStorage whenever wishlist changes
-    useEffect(() => {
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    }, [wishlist]);
+    const addToWishlist = useCallback(async (product: Product) => {
+        if (!user) return;
+        await addToWishlistAPI(user.id, String(product.id));
+        // Refetch wishlist
+        const items = await getWishlist(user.id);
+        setWishlist(items);
+    }, [user]);
 
-    const addToWishlist = (product: Product) => {
-        setWishlist((prev) => {
-            if (prev.some((item) => item.id === product.id)) {
-                return prev;
-            }
-            return [...prev, product];
-        });
+    const removeFromWishlist = useCallback(async (productId: string, variantId?: string) => {
+        if (!user) return;
+        await removeFromWishlistAPI(user.id, productId, variantId);
+        // Refetch wishlist
+        const items = await getWishlist(user.id);
+        setWishlist(items);
+    }, [user]);
+
+    const isInWishlist = (productId: string, variantId?: string) => {
+        return wishlist.some((item) => item.product_id === productId && (!variantId || item.variant_id === variantId));
     };
 
-    const removeFromWishlist = (productId: string) => {
-        setWishlist((prev) => prev.filter((item) => item.id !== productId));
-    };
-
-    const isInWishlist = (productId: string) => {
-        return wishlist.some((item) => item.id === productId);
-    };
-
-    const clearWishlist = () => {
+    const clearWishlist = useCallback(async () => {
+        if (!user) return;
+        // Remove all wishlist items for the user
+        const promises = wishlist.map(item => removeFromWishlistAPI(user.id, item.product_id, item.variant_id));
+        await Promise.all(promises);
         setWishlist([]);
-    };
+    }, [user, wishlist]);
 
     return (
         <WishlistContext.Provider
@@ -62,6 +69,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 isInWishlist,
                 clearWishlist,
                 wishlistCount: wishlist.length,
+                loading,
             }}
         >
             {children}

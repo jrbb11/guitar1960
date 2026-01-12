@@ -1,16 +1,52 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Package, MapPin, Heart, Settings, LogOut, ShoppingBag } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+import { User, Package, MapPin, Heart, Settings, LogOut, ShoppingBag, X, Check } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/common/Button';
+import { useWishlist } from '../context/WishlistContext';
+import { ProductCard } from '../components/products/ProductCard';
 
 import { getOrders } from '../services/orders';
-import { getAddresses, deleteAddress, createAddress, updateAddress } from '../services/profiles';
+import { getAddresses, deleteAddress, createAddress, updateAddress, updateProfile } from '../services/profiles';
 import { formatPrice } from '../utils/currency';
 
 interface AccountPageProps {
   defaultTab?: 'profile' | 'orders' | 'addresses' | 'wishlist';
 }
+
+// --- WishlistTab component ---
+const WishlistTab = () => {
+  const { wishlist, loading } = useWishlist();
+
+  if (loading) {
+    return <div className="text-center py-12 text-gray-500">Loading wishlist...</div>;
+  }
+
+  if (!wishlist || wishlist.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <Heart size={64} className="mx-auto text-gray-300 mb-4" />
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">Your Wishlist is Empty</h3>
+        <p className="text-gray-600 mb-6">Save your favorite items here</p>
+        <Link to="/shop">
+          <Button className="bg-gray-900 hover:bg-black text-white font-semibold">Start Shopping</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold mb-6">My Wishlist</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {wishlist.map((item) => item.product && (
+          <ProductCard key={item.product.id} product={item.product} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
   const { user, logout } = useAuth();
@@ -32,6 +68,24 @@ export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
     postal_code: '',
     is_default: false
   });
+
+  // Profile Edit State
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    full_name: '',
+    phone: '',
+  });
+
+  // Initialize profile form when user loads
+  useEffect(() => {
+    if (user) {
+      setProfileForm({
+        full_name: user.full_name || '',
+        phone: user.phone || '',
+      });
+    }
+  }, [user]);
 
   // Fetch orders when tab is active
   useEffect(() => {
@@ -133,6 +187,37 @@ export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
     }
   };
 
+  const handleSaveProfile = async () => {
+    if (!profileForm.full_name.trim()) {
+      toast.error('Full name is required');
+      return;
+    }
+
+    setIsSavingProfile(true);
+    try {
+      await updateProfile({
+        full_name: profileForm.full_name.trim(),
+        phone: profileForm.phone.trim(),
+      });
+      toast.success('Profile updated successfully!');
+      setIsEditingProfile(false);
+      // Note: useAuth should auto-refresh user data, but if not, you may need to reload
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast.error('Failed to update profile');
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
+  const handleCancelProfileEdit = () => {
+    setProfileForm({
+      full_name: user?.full_name || '',
+      phone: user?.phone || '',
+    });
+    setIsEditingProfile(false);
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -222,27 +307,87 @@ export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
                   <div>
                     <div className="flex items-center justify-between mb-6">
                       <h2 className="text-2xl font-bold">Profile Information</h2>
-                      <Button variant="outline" size="sm" className="flex items-center gap-2">
-                        <Settings size={16} />
-                        Edit
-                      </Button>
+                      {!isEditingProfile ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center gap-2"
+                          onClick={() => setIsEditingProfile(true)}
+                        >
+                          <Settings size={16} />
+                          Edit
+                        </Button>
+                      ) : (
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex items-center gap-2"
+                            onClick={handleCancelProfileEdit}
+                            disabled={isSavingProfile}
+                          >
+                            <X size={16} />
+                            Cancel
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="flex items-center gap-2 bg-gray-900 hover:bg-black text-white"
+                            onClick={handleSaveProfile}
+                            disabled={isSavingProfile}
+                          >
+                            {isSavingProfile ? (
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                            ) : (
+                              <Check size={16} />
+                            )}
+                            Save
+                          </Button>
+                        </div>
+                      )}
                     </div>
                     <div className="space-y-4">
                       <div>
                         <label className="text-sm font-semibold text-gray-600">Full Name</label>
-                        <p className="text-lg text-gray-900">{user.full_name || 'Not provided'}</p>
+                        {isEditingProfile ? (
+                          <input
+                            type="text"
+                            value={profileForm.full_name}
+                            onChange={(e) => setProfileForm({ ...profileForm, full_name: e.target.value })}
+                            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                            placeholder="Enter your full name"
+                          />
+                        ) : (
+                          <p className="text-lg text-gray-900">{user.full_name || 'Not provided'}</p>
+                        )}
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-gray-600">Email Address</label>
                         <p className="text-lg text-gray-900">{user.email || 'Not provided'}</p>
+                        {isEditingProfile && (
+                          <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+                        )}
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-gray-600">Phone Number</label>
-                        <p className="text-lg text-gray-900">+63 XXX XXX XXXX</p>
+                        {isEditingProfile ? (
+                          <input
+                            type="tel"
+                            value={profileForm.phone}
+                            onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+                            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                            placeholder="+63 XXX XXX XXXX"
+                          />
+                        ) : (
+                          <p className="text-lg text-gray-900">{user.phone || 'Not provided'}</p>
+                        )}
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-gray-600">Member Since</label>
-                        <p className="text-lg text-gray-900">January 2026</p>
+                        <p className="text-lg text-gray-900">
+                          {user.created_at
+                            ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                            : 'Unknown'}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -370,17 +515,7 @@ export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
                 )}
 
                 {activeTab === 'wishlist' && (
-                  <div>
-                    <h2 className="text-2xl font-bold mb-6">My Wishlist</h2>
-                    <div className="text-center py-12">
-                      <Heart size={64} className="mx-auto text-gray-300 mb-4" />
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Your Wishlist is Empty</h3>
-                      <p className="text-gray-600 mb-6">Save your favorite items here</p>
-                      <Link to="/shop">
-                        <Button className="bg-gray-900 hover:bg-black text-white font-semibold">Start Shopping</Button>
-                      </Link>
-                    </div>
-                  </div>
+                  <WishlistTab />
                 )}
               </div>
             </div>

@@ -6,7 +6,7 @@ import { getProductById } from '../services/products';
 import { formatPrice } from '../utils/currency';
 import { Button } from '../components/common/Button';
 import { useCart } from '../context/CartContext';
-import { Heart, ShoppingCart, Minus, Plus, Star, Truck, Shield, ArrowLeft, Ruler } from 'lucide-react';
+import { Heart, ShoppingCart, Minus, Plus, Star, Shield, ArrowLeft, Ruler } from 'lucide-react';
 import { Modal } from '../components/common/Modal';
 
 export const ProductDetailPage = () => {
@@ -398,14 +398,7 @@ export const ProductDetailPage = () => {
               </div>
 
               {/* Features */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Truck className="text-blue-600" size={24} />
-                  <div>
-                    <p className="font-semibold text-sm">Free Shipping</p>
-                    <p className="text-xs text-gray-600">Orders over ₱500</p>
-                  </div>
-                </div>
+              <div className="flex">
                 <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                   <Shield className="text-green-600" size={24} />
                   <div>

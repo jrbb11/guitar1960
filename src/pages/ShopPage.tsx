@@ -20,7 +20,7 @@ export const ShopPage = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
-  const [sortBy, setSortBy] = useState<'name' | 'price_asc' | 'price_desc' | 'newest'>('newest');
+  const [sortBy, setSortBy] = useState<'name' | 'price_asc' | 'price_desc' | 'newest'>('name');
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -281,8 +281,8 @@ export const ShopPage = () => {
                         <button
                           onClick={() => goToPage(page)}
                           className={`w-10 h-10 rounded-lg font-medium transition-colors ${currentPage === page
-                              ? 'bg-gray-900 text-white'
-                              : 'hover:bg-gray-100'
+                            ? 'bg-gray-900 text-white'
+                            : 'hover:bg-gray-100'
                             }`}
                         >
                           {page}

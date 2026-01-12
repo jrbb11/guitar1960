@@ -20,6 +20,7 @@ import { OrderDetailPage } from './pages/OrderDetailPage';
 import { FAQPage } from './pages/FAQPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
+import { ContactPage } from './pages/ContactPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
                   <Route path="/shop" element={<ShopPage />} />
                   <Route path="/product/:id" element={<ProductDetailPage />} />
                   <Route path="/cart" element={<CartPage />} />

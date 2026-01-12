@@ -11,7 +11,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
-  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { isInWishlist, addToWishlist, removeFromWishlist, loading: wishlistLoading } = useWishlist();
   const mainImage = product.image_url || product.gallery_urls?.[0] || '/placeholder-product.jpg';
 
   // Use price from database, fallback to regular_price or 0
@@ -104,7 +104,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               className={`p-2 md:p-2.5 border-2 rounded-lg transition-colors ${isInWishlist(String(product.id))
                 ? 'border-red-500 bg-red-50 text-red-500 hover:bg-red-100'
                 : 'border-gray-900 hover:bg-gray-900 hover:text-white'
-                }`}
+                } ${wishlistLoading ? 'opacity-50 pointer-events-none' : ''}`}
             >
               <Heart size={16} className="md:w-[18px] md:h-[18px]" fill={isInWishlist(String(product.id)) ? "currentColor" : "none"} />
             </button>

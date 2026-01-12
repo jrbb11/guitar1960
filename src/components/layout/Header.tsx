@@ -1,16 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Heart, Search, Menu, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 
 export const Header = () => {
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [menDropdownOpen, setMenDropdownOpen] = useState(false);
   const [ladiesDropdownOpen, setLadiesDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { cart } = useCart();
   const { wishlistCount } = useWishlist();
   const cartItemCount = cart.itemCount;
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
@@ -23,16 +34,20 @@ export const Header = () => {
           </Link>
 
           {/* Search Bar (Desktop) */}
-          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl mx-8">
             <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Search for products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
               />
-              <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+              <button type="submit" className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600">
+                <Search size={20} />
+              </button>
             </div>
-          </div>
+          </form>
 
           {/* Actions */}
           <div className="flex items-center gap-4">
@@ -145,102 +160,119 @@ export const Header = () => {
           <Link to="/shop" className="hover:text-brand-darkGray font-medium uppercase">
             SHOP
           </Link>
+          <Link to="/contact" className="hover:text-brand-darkGray font-medium uppercase">
+            CONTACT
+          </Link>
         </nav>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 top-[73px] bg-white z-40 overflow-y-auto">
-            <div className="flex flex-col p-4">
-              {/* Search */}
-              <div className="relative mb-6">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg pl-10"
-                />
-                <Search className="absolute left-3 top-3.5 text-gray-400" size={20} />
-              </div>
+        <div
+          className={`md:hidden fixed inset-x-0 top-[73px] bg-white z-40 overflow-y-auto shadow-lg transition-all duration-300 ease-out ${isMobileMenuOpen
+            ? 'opacity-100 translate-y-0 max-h-[calc(100vh-73px)]'
+            : 'opacity-0 -translate-y-4 max-h-0 pointer-events-none'
+            }`}
+        >
+          <div className="flex flex-col p-4">
+            {/* Search */}
+            <form onSubmit={handleSearch} className="relative mb-6">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg pl-10"
+              />
+              <button type="submit" className="absolute left-3 top-3.5 text-gray-400">
+                <Search size={20} />
+              </button>
+            </form>
 
-              {/* Main Links */}
-              <nav className="flex flex-col">
-                <Link
-                  to="/shop"
-                  className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  All Products
-                </Link>
-                <Link
-                  to="/about"
-                  className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  About Us
-                </Link>
-                <Link
-                  to="/shop?category=men"
-                  className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Men's
-                </Link>
-                <Link
-                  to="/shop?category=ladies"
-                  className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Ladies'
-                </Link>
-                <Link
-                  to="/shop?category=kids"
-                  className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Kids
-                </Link>
-              </nav>
+            {/* Main Links */}
+            <nav className="flex flex-col">
+              <Link
+                to="/shop"
+                className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                All Products
+              </Link>
+              <Link
+                to="/about"
+                className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                About Us
+              </Link>
+              <Link
+                to="/shop?category=men"
+                className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Men's
+              </Link>
+              <Link
+                to="/shop?category=ladies"
+                className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Ladies'
+              </Link>
+              <Link
+                to="/shop?category=kids"
+                className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Kids
+              </Link>
+              <Link
+                to="/contact"
+                className="flex items-center gap-3 py-4 border-b border-gray-100 font-medium text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Contact Us
+              </Link>
+            </nav>
 
-              {/* Account Section */}
-              <div className="mt-6 pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">Account</p>
-                <Link
-                  to="/account"
-                  className="flex items-center gap-3 py-3 text-gray-700"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <User size={20} />
-                  My Account
-                </Link>
-                <Link
-                  to="/wishlist"
-                  className="flex items-center gap-3 py-3 text-gray-700"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Heart size={20} />
-                  Wishlist
-                  {wishlistCount > 0 && (
-                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </Link>
-                <Link
-                  to="/cart"
-                  className="flex items-center gap-3 py-3 text-gray-700"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <ShoppingCart size={20} />
-                  Cart
-                  {cartItemCount > 0 && (
-                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </Link>
-              </div>
+            {/* Account Section */}
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">Account</p>
+              <Link
+                to="/account"
+                className="flex items-center gap-3 py-3 text-gray-700"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <User size={20} />
+                My Account
+              </Link>
+              <Link
+                to="/wishlist"
+                className="flex items-center gap-3 py-3 text-gray-700"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Heart size={20} />
+                Wishlist
+                {wishlistCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+              <Link
+                to="/cart"
+                className="flex items-center gap-3 py-3 text-gray-700"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <ShoppingCart size={20} />
+                Cart
+                {cartItemCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );
