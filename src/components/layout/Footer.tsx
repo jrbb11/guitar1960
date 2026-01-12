@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Mail, Phone } from 'lucide-react';
 
 export const Footer = () => {
   return (
@@ -17,13 +17,11 @@ export const Footer = () => {
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">
                 <Facebook size={20} />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-                <Twitter size={20} />
-              </a>
+
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500">
                 <Instagram size={20} />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
+              <a href="https://www.youtube.com/@GuitarApparel1960" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <Youtube size={20} />
               </a>
             </div>
