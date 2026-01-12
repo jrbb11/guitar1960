@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/common/Button';
 import { useWishlist } from '../context/WishlistContext';
 import { ProductCard } from '../components/products/ProductCard';
+import { OrderItemSkeleton, AddressCardSkeleton } from '../components/common/Skeleton';
 
 import { getOrders } from '../services/orders';
 import { getAddresses, deleteAddress, createAddress, updateAddress, updateProfile } from '../services/profiles';
@@ -398,7 +399,11 @@ export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
                     <h2 className="text-2xl font-bold mb-6">Order History</h2>
 
                     {isLoadingOrders ? (
-                      <div className="text-center py-12 text-gray-500">Loading orders...</div>
+                      <div className="space-y-4">
+                        {Array.from({ length: 3 }).map((_, i) => (
+                          <OrderItemSkeleton key={i} />
+                        ))}
+                      </div>
                     ) : orders.length > 0 ? (
                       <div className="space-y-4">
                         {orders.map((order) => (
@@ -468,7 +473,11 @@ export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
                     </div>
 
                     {isLoadingAddresses ? (
-                      <div className="text-center py-12 text-gray-500">Loading addresses...</div>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {Array.from({ length: 2 }).map((_, i) => (
+                          <AddressCardSkeleton key={i} />
+                        ))}
+                      </div>
                     ) : addresses.length > 0 ? (
                       <div className="grid md:grid-cols-2 gap-4">
                         {addresses.map((address) => (
@@ -523,103 +532,105 @@ export const AccountPage = ({ defaultTab = 'profile' }: AccountPageProps) => {
         </div>
       </div>
       {/* Address Modal */}
-      {showAddressModal && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all">
-          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full transform transition-all">
-            <h3 className="text-xl font-bold mb-4">{editingAddress ? 'Edit Address' : 'Add New Address'}</h3>
-            <form onSubmit={handleSaveAddress} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full border rounded-md p-2"
-                  value={addressForm.full_name}
-                  onChange={e => setAddressForm({ ...addressForm, full_name: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full border rounded-md p-2"
-                  value={addressForm.phone}
-                  onChange={e => setAddressForm({ ...addressForm, phone: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full border rounded-md p-2"
-                  value={addressForm.street_address}
-                  onChange={e => setAddressForm({ ...addressForm, street_address: e.target.value })}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+      {
+        showAddressModal && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all">
+            <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full transform transition-all">
+              <h3 className="text-xl font-bold mb-4">{editingAddress ? 'Edit Address' : 'Add New Address'}</h3>
+              <form onSubmit={handleSaveAddress} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                   <input
                     type="text"
                     required
                     className="w-full border rounded-md p-2"
-                    value={addressForm.city}
-                    onChange={e => setAddressForm({ ...addressForm, city: e.target.value })}
+                    value={addressForm.full_name}
+                    onChange={e => setAddressForm({ ...addressForm, full_name: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Province</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                   <input
                     type="text"
                     required
                     className="w-full border rounded-md p-2"
-                    value={addressForm.province}
-                    onChange={e => setAddressForm({ ...addressForm, province: e.target.value })}
+                    value={addressForm.phone}
+                    onChange={e => setAddressForm({ ...addressForm, phone: e.target.value })}
                   />
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
                   <input
                     type="text"
+                    required
                     className="w-full border rounded-md p-2"
-                    value={addressForm.postal_code}
-                    onChange={e => setAddressForm({ ...addressForm, postal_code: e.target.value })}
+                    value={addressForm.street_address}
+                    onChange={e => setAddressForm({ ...addressForm, street_address: e.target.value })}
                   />
                 </div>
-                <div className="flex items-center pt-6">
-                  <label className="flex items-center gap-2 cursor-pointer">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
                     <input
-                      type="checkbox"
-                      checked={addressForm.is_default}
-                      onChange={e => setAddressForm({ ...addressForm, is_default: e.target.checked })}
-                      className="rounded text-gray-900 focus:ring-gray-900"
+                      type="text"
+                      required
+                      className="w-full border rounded-md p-2"
+                      value={addressForm.city}
+                      onChange={e => setAddressForm({ ...addressForm, city: e.target.value })}
                     />
-                    <span className="text-sm font-medium">Set as Default</span>
-                  </label>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Province</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full border rounded-md p-2"
+                      value={addressForm.province}
+                      onChange={e => setAddressForm({ ...addressForm, province: e.target.value })}
+                    />
+                  </div>
                 </div>
-              </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                    <input
+                      type="text"
+                      className="w-full border rounded-md p-2"
+                      value={addressForm.postal_code}
+                      onChange={e => setAddressForm({ ...addressForm, postal_code: e.target.value })}
+                    />
+                  </div>
+                  <div className="flex items-center pt-6">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={addressForm.is_default}
+                        onChange={e => setAddressForm({ ...addressForm, is_default: e.target.checked })}
+                        className="rounded text-gray-900 focus:ring-gray-900"
+                      />
+                      <span className="text-sm font-medium">Set as Default</span>
+                    </label>
+                  </div>
+                </div>
 
-              <div className="flex gap-3 mt-6">
-                <Button
-                  type="button"
-                  variant="outline"
-                  fullWidth
-                  onClick={() => setShowAddressModal(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" fullWidth className="bg-gray-900 hover:bg-black text-white">
-                  {editingAddress ? 'Update Address' : 'Save Address'}
-                </Button>
-              </div>
-            </form>
+                <div className="flex gap-3 mt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    fullWidth
+                    onClick={() => setShowAddressModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" fullWidth className="bg-gray-900 hover:bg-black text-white">
+                    {editingAddress ? 'Update Address' : 'Save Address'}
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 };

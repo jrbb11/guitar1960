@@ -3,14 +3,20 @@ import { Heart } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { Button } from '../components/common/Button';
 import { ProductCard } from '../components/products/ProductCard';
+import { ProductCardSkeleton } from '../components/common/Skeleton';
 
 export const WishlistPage = () => {
     const { wishlist, loading } = useWishlist();
 
     if (loading) {
         return (
-            <div className="container mx-auto px-4 py-16 text-center">
-                <div className="text-gray-500">Loading wishlist...</div>
+            <div className="container mx-auto px-4 py-12">
+                <h1 className="text-3xl font-bold mb-8">My Wishlist</h1>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <ProductCardSkeleton key={i} />
+                    ))}
+                </div>
             </div>
         );
     }

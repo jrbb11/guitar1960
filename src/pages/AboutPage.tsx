@@ -1,6 +1,12 @@
+import { SEO } from '../components/common/SEO';
+
 export const AboutPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title="About Us"
+        description="Learn about Guitar1960's legacy. A tradition of quality apparel since 1960, founded by Mr. Choa Bengtong."
+      />
       {/* Hero Section */}
       <div className="bg-gray-900 text-white py-16">
         <div className="container mx-auto px-4">
@@ -21,16 +27,16 @@ export const AboutPage = () => {
                     Guitar is the brand that synonymous with quality.
                   </p>
                 </div>
-                
+
                 <div className="space-y-6">
-                  <img 
-                    src="/images/about/about1.png" 
-                    alt="Guitar1960 Factory Building" 
+                  <img
+                    src="/images/about/about1.png"
+                    alt="Guitar1960 Factory Building"
                     className="w-full h-auto"
                   />
-                  <img 
-                    src="/images/about/about3.png" 
-                    alt="Guitar1960 Workers" 
+                  <img
+                    src="/images/about/about3.png"
+                    alt="Guitar1960 Workers"
                     className="w-full h-auto"
                   />
                 </div>
@@ -38,23 +44,23 @@ export const AboutPage = () => {
 
               {/* Right Column - Image and History */}
               <div>
-                <img 
-                  src="/images/about/about2.png" 
-                  alt="Guitar1960 Manufacturing" 
+                <img
+                  src="/images/about/about2.png"
+                  alt="Guitar1960 Manufacturing"
                   className="w-full h-auto mb-8"
                 />
-                
+
                 <h2 className="text-3xl font-bold text-center mb-8 uppercase tracking-wide">A Brief History</h2>
-                
+
                 <div className="space-y-6 text-justify">
                   <p className="text-gray-700 leading-relaxed">
                     Established in 1960 by the late Mr. Choa Bengtong, this tradition has been passed on to the new generation who incorporates the strict adherence to quality while injecting vibrant and innovative ideas to their product lines.
                   </p>
-                  
+
                   <p className="text-gray-700 leading-relaxed">
                     What began as a small business venture became one of the most enduring products still preferred even by second and third generation whose father wore this brand of shirts.
                   </p>
-                  
+
                   <p className="text-gray-700 leading-relaxed">
                     The company's classic t-shirt is still the favourite casuals and is considered as a must wear for all generations popularized by Hollywood legends during the 1950's. It transcended its status from a mere undergarment to a necessity like denim jeans which is being paired with almost anything.
                   </p>
@@ -91,9 +97,9 @@ export const AboutPage = () => {
 
                 {/* Logo in center */}
                 <div className="flex justify-center py-6">
-                  <img 
-                    src="/images/logo/guitar logo.png" 
-                    alt="Guitar Apparel Est 1960" 
+                  <img
+                    src="/images/logo/guitar logo.png"
+                    alt="Guitar Apparel Est 1960"
                     className="h-24 w-auto"
                   />
                 </div>
@@ -120,9 +126,9 @@ export const AboutPage = () => {
             <div className="grid md:grid-cols-2 gap-16 items-center">
               {/* Left Column - Product Collage Image */}
               <div className="relative w-full">
-                <img 
-                  src="/images/products/Collage.jpg" 
-                  alt="Guitar Product Line" 
+                <img
+                  src="/images/products/Collage.jpg"
+                  alt="Guitar Product Line"
                   className="w-full h-auto"
                 />
               </div>
@@ -168,9 +174,9 @@ export const AboutPage = () => {
               What's New in Guitar?
             </h2>
             <div className="flex justify-center">
-              <img 
-                src="/images/products/whats-new.png" 
-                alt="What's New in Guitar" 
+              <img
+                src="/images/products/whats-new.png"
+                alt="What's New in Guitar"
                 className="w-full max-w-4xl h-auto"
               />
             </div>
@@ -202,9 +208,9 @@ export const AboutPage = () => {
 
               {/* Right Column - Image */}
               <div>
-                <img 
-                  src="/images/about/brand-ambassador.png" 
-                  alt="Guitar Brand Ambassadors - Lexi Gonzales and Kristoffer Martin" 
+                <img
+                  src="/images/about/brand-ambassador.png"
+                  alt="Guitar Brand Ambassadors - Lexi Gonzales and Kristoffer Martin"
                   className="w-full h-auto"
                 />
               </div>

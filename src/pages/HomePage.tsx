@@ -7,6 +7,8 @@ import { ShoppingBag, Truck, Shield, Clock } from 'lucide-react';
 import { getProducts } from '../services/products';
 import type { Product } from '../types';
 
+import { SEO } from '../components/common/SEO';
+
 export const HomePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,6 +71,10 @@ export const HomePage = () => {
 
   return (
     <>
+      <SEO
+        title="Home"
+        description="Welcome to Guitar1960 - Premium apparel and accessories since 1960. Shop our latest collection for men, women, and kids."
+      />
       {/* Hero Slider Section - Full Viewport */}
       <HeroSlider slides={heroSlides} autoPlayInterval={5000} />
 

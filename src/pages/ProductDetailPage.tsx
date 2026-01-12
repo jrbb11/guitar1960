@@ -8,6 +8,7 @@ import { Button } from '../components/common/Button';
 import { useCart } from '../context/CartContext';
 import { Heart, ShoppingCart, Minus, Plus, Star, Shield, ArrowLeft, Ruler } from 'lucide-react';
 import { Modal } from '../components/common/Modal';
+import { SEO } from '../components/common/SEO';
 
 export const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -132,6 +133,12 @@ export const ProductDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEO
+        title={product.name}
+        description={product.description || `${product.name} - Shop now at Guitar1960`}
+        image={product.image_url}
+        type="product"
+      />
       <div className="container mx-auto px-4">
         <button
           onClick={() => navigate(-1)}

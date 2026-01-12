@@ -21,6 +21,7 @@ import { FAQPage } from './pages/FAQPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { ContactPage } from './pages/ContactPage';
+import { NotFound } from './pages/NotFound';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
                   <Route path="/account/orders" element={<AccountPage defaultTab="orders" />} />
                   <Route path="/account/orders/:id" element={<OrderDetailPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
               <Footer />

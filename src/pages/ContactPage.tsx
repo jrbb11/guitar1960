@@ -3,8 +3,10 @@ import { toast } from 'react-hot-toast';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { submitContactForm } from '../services/contact';
+import { SEO } from '../components/common/SEO';
 
 export const ContactPage = () => {
+    // ... state ...
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -37,8 +39,14 @@ export const ContactPage = () => {
         }
     };
 
+    // ... handleSubmit ...
+
     return (
         <div className="min-h-screen bg-gray-50">
+            <SEO
+                title="Contact Us"
+                description="Get in touch with Guitar1960. We're here to help with your orders, product questions, and more."
+            />
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16">
                 <div className="container mx-auto px-4 text-center">

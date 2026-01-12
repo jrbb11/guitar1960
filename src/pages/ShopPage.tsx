@@ -5,6 +5,8 @@ import type { Product } from '../types';
 import { SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getProducts, getProductsCount } from '../services/products';
 import { getCategories } from '../services/categories';
+import { SEO } from '../components/common/SEO';
+import { ProductCardSkeleton } from '../components/common/Skeleton';
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -98,11 +100,14 @@ export const ShopPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
+        <SEO
+          title={selectedCategories.length > 0 ? 'Shop Categories' : 'Shop All'}
+          description="Browse our complete collection of high-quality apparel. Filter by category, price, and more to find exactly what you're looking for."
+        />
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Shop All Products</h1>
-            <p className="text-gray-600">Browse our complete collection</p>
+            <h1 className="text-3xl font-bold">Shop Full Collection</h1>
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -222,9 +227,10 @@ export const ShopPage = () => {
 
             {/* Loading State */}
             {loading && (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading products...</p>
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
               </div>
             )}
 
