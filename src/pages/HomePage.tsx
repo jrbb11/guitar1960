@@ -177,6 +177,7 @@ export const HomePage = () => {
             <input
               type="email"
               placeholder="Enter your email"
+              aria-label="Email address for newsletter"
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 outline-none"
             />
             <Button className="bg-gray-900 text-white hover:bg-black border border-transparent">

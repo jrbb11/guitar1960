@@ -176,6 +176,7 @@ export const ShopPage = () => {
                     <input
                       type="number"
                       placeholder="Min"
+                      aria-label="Minimum price"
                       value={minPrice || ''}
                       onChange={(e) => setMinPrice(Number(e.target.value))}
                       className="w-full px-2 py-1 border rounded"
@@ -184,6 +185,7 @@ export const ShopPage = () => {
                     <input
                       type="number"
                       placeholder="Max"
+                      aria-label="Maximum price"
                       value={maxPrice || ''}
                       onChange={(e) => setMaxPrice(Number(e.target.value))}
                       className="w-full px-2 py-1 border rounded"

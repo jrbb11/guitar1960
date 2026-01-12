@@ -39,6 +39,7 @@ export const Header = () => {
               <input
                 type="text"
                 placeholder="Search for products..."
+                aria-label="Search products"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
@@ -73,6 +74,7 @@ export const Header = () => {
             <button
               className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
             >
               <Menu size={24} />
             </button>
@@ -178,6 +180,7 @@ export const Header = () => {
               <input
                 type="text"
                 placeholder="Search products..."
+                aria-label="Search products mobile"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg pl-10"
