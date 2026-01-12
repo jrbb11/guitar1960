@@ -15,54 +15,93 @@ export interface ShippingRate {
     free_shipping_threshold: number | null
 }
 
+// Metro Manila cities/municipalities for zone detection
+const METRO_MANILA_CITIES = [
+    'manila',
+    'quezon city',
+    'caloocan',
+    'las piñas', 'las pinas',
+    'makati',
+    'malabon',
+    'mandaluyong',
+    'marikina',
+    'muntinlupa',
+    'navotas',
+    'parañaque', 'paranaque',
+    'pasay',
+    'pasig',
+    'pateros',
+    'san juan',
+    'taguig',
+    'valenzuela',
+    // Common variants
+    'quezon', 'qc',
+    'city of manila',
+    'city of makati',
+    'city of taguig',
+    'city of pasig',
+];
+
+/**
+ * Check if a city is in Metro Manila
+ */
+function isMetroManila(cityName: string): boolean {
+    const normalized = cityName.toLowerCase().trim();
+    return METRO_MANILA_CITIES.some(city =>
+        normalized.includes(city) || city.includes(normalized)
+    );
+}
+
 /**
  * Get shipping rate for a city name
+ * Metro Manila: ₱120
+ * Rest of Philippines: ₱450
  */
 export async function getShippingRate(cityName: string): Promise<number> {
     try {
-        // First, try to get the zone from ph_cities table
-        const { data: cityData, error: cityError } = await supabase
-            .from('ph_cities')
-            .select('zone_id')
-            .ilike('name', cityName)
-            .maybeSingle()
+        // Check if Metro Manila first (fast, no DB call)
+        if (isMetroManila(cityName)) {
+            // Get Metro Manila rate from database
+            const { data: zoneData } = await supabase
+                .from('shipping_zones')
+                .select('id')
+                .eq('name', 'Metro Manila')
+                .maybeSingle();
 
-        if (cityError || !cityData?.zone_id) {
-            // Fallback: check metro_manila_cities table
-            const { data: metroData, error: metroError } = await supabase
-                .from('metro_manila_cities')
-                .select('zone_id')
-                .ilike('name', cityName)
-                .maybeSingle()
+            if (zoneData) {
+                const { data: rateData } = await supabase
+                    .from('shipping_rates')
+                    .select('rate')
+                    .eq('zone_id', zoneData.id)
+                    .maybeSingle();
 
-            if (metroError || !metroData?.zone_id) {
-                // Default to "Rest of Philippines" rate
-                console.warn(`City "${cityName}" not found in database, using default rate`)
-                return 450.00
+                return rateData?.rate || 120.00;
             }
+            return 120.00; // Fallback Metro Manila rate
+        }
 
-            // Get rate for this zone
+        // Not Metro Manila - get Rest of Philippines rate
+        const { data: zoneData } = await supabase
+            .from('shipping_zones')
+            .select('id')
+            .eq('name', 'Rest of Philippines')
+            .maybeSingle();
+
+        if (zoneData) {
             const { data: rateData } = await supabase
                 .from('shipping_rates')
                 .select('rate')
-                .eq('zone_id', metroData.zone_id)
-                .maybeSingle()
+                .eq('zone_id', zoneData.id)
+                .maybeSingle();
 
-            return rateData?.rate || 450.00
+            return rateData?.rate || 450.00;
         }
 
-        // Get rate for this zone
-        const { data: rateData } = await supabase
-            .from('shipping_rates')
-            .select('rate')
-            .eq('zone_id', cityData.zone_id)
-            .maybeSingle()
-
-        return rateData?.rate || 450.00
+        return 450.00; // Fallback provincial rate
 
     } catch (error) {
-        console.error('Error getting shipping rate:', error)
-        return 450.00 // Default to Rest of Philippines
+        console.error('Error getting shipping rate:', error);
+        return 450.00; // Default to Rest of Philippines
     }
 }
 
