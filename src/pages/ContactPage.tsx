@@ -73,9 +73,9 @@ export const ContactPage = () => {
                                     <div>
                                         <h3 className="font-semibold text-gray-900">Visit Us</h3>
                                         <p className="text-gray-600 text-sm mt-1">
-                                            123 Fashion Street<br />
-                                            Makati City, Metro Manila<br />
-                                            Philippines 1234
+                                            638 Basco Street, Intramuros<br />
+                                            Manila, Metro Manila<br />
+                                            Philippines 1002
                                         </p>
                                     </div>
                                 </div>
@@ -87,8 +87,8 @@ export const ContactPage = () => {
                                     <div>
                                         <h3 className="font-semibold text-gray-900">Call Us</h3>
                                         <p className="text-gray-600 text-sm mt-1">
-                                            +63 912 345 6789<br />
-                                            +63 2 8123 4567
+                                            Globe: 0917-684-6868<br />
+                                            Smart: 0933-859-8820
                                         </p>
                                     </div>
                                 </div>
@@ -100,8 +100,7 @@ export const ContactPage = () => {
                                     <div>
                                         <h3 className="font-semibold text-gray-900">Email Us</h3>
                                         <p className="text-gray-600 text-sm mt-1">
-                                            support@guitar1960.com<br />
-                                            orders@guitar1960.com
+                                            guitarcorp_1960@yahoo.com
                                         </p>
                                     </div>
                                 </div>
@@ -113,9 +112,8 @@ export const ContactPage = () => {
                                     <div>
                                         <h3 className="font-semibold text-gray-900">Business Hours</h3>
                                         <p className="text-gray-600 text-sm mt-1">
-                                            Monday - Friday: 9AM - 6PM<br />
-                                            Saturday: 10AM - 4PM<br />
-                                            Sunday: Closed
+                                            Monday - Friday: 8:30AM - 5:00PM<br />
+                                            Saturday - Sunday: Closed
                                         </p>
                                     </div>
                                 </div>
@@ -263,12 +261,16 @@ export const ContactPage = () => {
                         <div className="p-6 border-b">
                             <h2 className="text-xl font-bold text-gray-900">Find Us on the Map</h2>
                         </div>
-                        <div className="h-80 bg-gray-200 flex items-center justify-center">
-                            <div className="text-center text-gray-500">
-                                <MapPin size={48} className="mx-auto mb-2 opacity-50" />
-                                <p>Map integration available</p>
-                                <p className="text-sm">Google Maps or similar can be embedded here</p>
-                            </div>
+                        <div className="h-80 w-full">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!3m2!1sen!2sph!4v1768291444907!5m2!1sen!2sph!6m8!1m7!1slcZirP78hHZKodOGag_yGg!2m2!1d14.58768338328742!2d120.9757204713963!3f254.15630930135774!4f-47.240347143559845!5f0.7820865974627469"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            />
                         </div>
                     </div>
                 </div>

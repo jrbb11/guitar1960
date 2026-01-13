@@ -55,7 +55,7 @@ export const Footer = () => {
             <div className="flex flex-col md:flex-col items-center md:items-start gap-2 text-xs md:text-sm">
               <a href="tel:+639176846868" className="flex items-center gap-2 hover:text-white">
                 <Phone size={14} />
-                +63 917-684-6868
+                0917-684-6868
               </a>
               <a href="mailto:guitarcorp_1960@yahoo.com" className="flex items-center gap-2 hover:text-white">
                 <Mail size={14} />
