@@ -235,6 +235,28 @@ export const ProductDetailPage = () => {
                 // Get unique sizes from VALID variants (filtered by color)
                 const sizes = hasSize
                   ? Array.from(new Set(availableVariants.map(v => getAttr(v, 'Size')).filter(Boolean)))
+                    .sort((a, b) => {
+                      // Try to parse as numbers first
+                      const numA = parseFloat(a);
+                      const numB = parseFloat(b);
+
+                      // If both are valid numbers, sort numerically
+                      if (!isNaN(numA) && !isNaN(numB)) {
+                        return numA - numB;
+                      }
+
+                      // Otherwise, sort alphabetically (for XS, S, M, L, XL, etc.)
+                      const sizeOrder = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL', '4XL'];
+                      const indexA = sizeOrder.indexOf(a.toUpperCase());
+                      const indexB = sizeOrder.indexOf(b.toUpperCase());
+
+                      if (indexA !== -1 && indexB !== -1) {
+                        return indexA - indexB;
+                      }
+
+                      // Fall back to string comparison
+                      return a.localeCompare(b);
+                    })
                   : [];
 
                 return (

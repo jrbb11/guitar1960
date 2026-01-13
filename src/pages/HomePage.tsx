@@ -53,7 +53,10 @@ export const HomePage = () => {
     },
     {
       image: '/images/banners/Store Cover Banners Infants 2000x1000.jpg',
-      mobileImage: '/images/banners/Forbaby-mobile.png'
+      mobileImage: '/images/banners/Forbaby-mobile.png',
+      title: 'Newborn & Toddler Collection',
+      subtitle: 'Soft, breathable, and gentle on baby skin',
+      link: '/shop?category=infants'
     },
     {
       image: '/images/banners/Store Cover Banners Kids 2000x1000.jpg',
