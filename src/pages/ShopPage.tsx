@@ -36,12 +36,81 @@ export const ShopPage = () => {
         const cats = await getCategories();
         setCategories(cats);
 
-        // Check for category in URL
+        // Check for category and subcategory in URL
         const categorySlug = searchParams.get('category');
+        const subcategorySlug = searchParams.get('subcategory');
+
         if (categorySlug) {
-          const foundCat = cats.find((c: any) => c.slug === categorySlug);
-          if (foundCat) {
-            setSelectedCategories([foundCat.id]);
+          let targetCatIds: string[] = [];
+
+          if (subcategorySlug) {
+            // Find categories that could match the parent category slug
+            // Handle common synonyms
+            const parentSlugs = [categorySlug];
+            if (categorySlug === 'men') parentSlugs.push('mens');
+            if (categorySlug === 'mens') parentSlugs.push('men');
+            if (categorySlug === 'ladies') parentSlugs.push('woman');
+            if (categorySlug === 'woman') parentSlugs.push('ladies');
+
+            // 1. Try to find a subcategory that specifically belongs to the parent category
+            const subCat = cats.find(c => {
+              const slug = c.slug.toLowerCase();
+              const matchesSubslug = slug === subcategorySlug ||
+                parentSlugs.some(ps => slug === `${ps.toLowerCase()}-${subcategorySlug?.toLowerCase()}` || slug === `${subcategorySlug?.toLowerCase()}-${ps.toLowerCase()}`) ||
+                slug === `${subcategorySlug}-${categorySlug === 'men' ? 'man' : 'woman'}`;
+
+              if (matchesSubslug) {
+                const parentId = c.parent;
+                if (parentId) {
+                  const parent = cats.find(p => p.id === parentId);
+                  // If it has a parent, check if parent matches our category slug or any synonym
+                  if (parent) {
+                    return parentSlugs.some(ps => parent.slug.toLowerCase() === ps.toLowerCase());
+                  }
+                }
+                // If no parent, but slug is specific (like 'mens-apparel'), it's a good match
+                return parentSlugs.some(ps => slug.includes(ps.toLowerCase()));
+              }
+              return false;
+            });
+
+            if (subCat) {
+              targetCatIds = [subCat.id];
+            } else {
+              // 2. Special case: Main Categories like "Denims" where children are "For Men's" / "For Ladies"
+              const subcategoryParent = cats.find(c => c.slug.toLowerCase() === subcategorySlug?.toLowerCase());
+              if (subcategoryParent) {
+                const specificChild = cats.find(c =>
+                  c.parent === subcategoryParent.id &&
+                  (c.name.toLowerCase().includes(categorySlug.toLowerCase()) ||
+                    (categorySlug === 'men' && c.name.toLowerCase().includes('mens')) ||
+                    (categorySlug === 'ladies' && c.name.toLowerCase().includes('woman')))
+                );
+
+                if (specificChild) {
+                  targetCatIds = [specificChild.id];
+                } else {
+                  // Fallback to just the subcategory parent if no specific child found
+                  targetCatIds = [subcategoryParent.id];
+                }
+              }
+            }
+          }
+
+          // If no specific subcategory found, fallback to the main category slug matching
+          if (targetCatIds.length === 0) {
+            const foundCat = cats.find((c: any) =>
+              c.slug.toLowerCase() === categorySlug.toLowerCase() ||
+              (categorySlug === 'men' && c.slug.toLowerCase() === 'mens') ||
+              (categorySlug === 'ladies' && c.slug.toLowerCase() === 'woman')
+            );
+            if (foundCat) {
+              targetCatIds = [foundCat.id];
+            }
+          }
+
+          if (targetCatIds.length > 0) {
+            setSelectedCategories(targetCatIds);
           }
         }
       } catch (err) {

@@ -41,15 +41,58 @@ export const ProductDetailPage = () => {
 
         setProduct(data);
 
-        // Auto-select first variant if available
+        // Auto-select variant: Prioritize "White" and Smallest Size
         if (data.variants && data.variants.length > 0) {
-          const firstVariant = data.variants[0];
-          setSelectedVariant(firstVariant);
+          const getVariantAttr = (v: ProductVariant, key: string) =>
+            v.attributes?.[key] || v.attributes?.[key.toLowerCase()] || v.attributes?.[key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()];
+
+          // Sort variants to find the best default
+          const sortedVariants = [...data.variants].sort((a, b) => {
+            const colorA = (getVariantAttr(a, 'Color') || '').toLowerCase();
+            const colorB = (getVariantAttr(b, 'Color') || '').toLowerCase();
+
+            // 1. Color Priority: White > Black > Others
+            const colorPriority = ['white', 'black'];
+            const priorityA = colorPriority.indexOf(colorA);
+            const priorityB = colorPriority.indexOf(colorB);
+
+            if (priorityA !== -1 && priorityB === -1) return -1;
+            if (priorityA === -1 && priorityB !== -1) return 1;
+            if (priorityA !== -1 && priorityB !== -1 && priorityA !== priorityB) {
+              return priorityA - priorityB;
+            }
+
+            // 2. Sort by size within same color (or if neither is in priority)
+            const sizeA = getVariantAttr(a, 'Size') || '';
+            const sizeB = getVariantAttr(b, 'Size') || '';
+
+            const numA = parseFloat(sizeA);
+            const numB = parseFloat(sizeB);
+
+            if (!isNaN(numA) && !isNaN(numB)) {
+              return numA - numB;
+            }
+
+            const sizeOrder = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL', '4XL'];
+            const indexA = sizeOrder.indexOf(sizeA.toUpperCase());
+            const indexB = sizeOrder.indexOf(sizeB.toUpperCase());
+
+            if (indexA !== -1 && indexB !== -1) {
+              return indexA - indexB;
+            }
+
+            return sizeA.localeCompare(sizeB);
+          });
+
+          const defaultVariant = sortedVariants[0];
+          setSelectedVariant(defaultVariant);
 
           // Initial attribute state
-          const attrs = firstVariant.attributes || {};
-          if (attrs.Color) setSelectedColor(attrs.Color);
-          if (attrs.Size) setSelectedSize(attrs.Size);
+          const colorVal = getVariantAttr(defaultVariant, 'Color');
+          const sizeVal = getVariantAttr(defaultVariant, 'Size');
+
+          if (colorVal) setSelectedColor(colorVal);
+          if (sizeVal) setSelectedSize(sizeVal);
         }
       } catch (err) {
         console.error('Error loading product:', err);
@@ -98,27 +141,42 @@ export const ProductDetailPage = () => {
   // 3. Product gallery images
 
   const getDisplayImages = () => {
-    // Get product gallery images (excluding main image since we handle it separately)
-    const productGalleryImages = product.gallery_urls || [];
+    const variantImages = selectedVariant?.images || [];
+    const mainImageUrl = product.image_url;
+    const galleryUrls = product.gallery_urls || [];
 
-    // Determine the primary/main image
-    let primaryImage: string;
+    let combined: string[] = [];
 
-    if (selectedVariant && selectedVariant.images && selectedVariant.images.length > 0) {
-      // If variant has specific images, use the first one as primary
-      primaryImage = selectedVariant.images[0];
+    if (variantImages.length > 0) {
+      // If we have variant images, prioritize them.
+      // We exclude the product's main_image_url from the gallery processing here 
+      // because typically the variant-specific image is a duplicate of the main product photo 
+      // but provided in a different storage path (e.g., variant-images vs gallery).
+      combined = [
+        ...variantImages,
+        ...galleryUrls.filter(url => url.trim() !== mainImageUrl?.trim())
+      ];
     } else {
-      // Use product main image as primary
-      primaryImage = product.image_url || '/placeholder-product.jpg';
+      // No variant images, use standard product image + gallery
+      combined = [
+        mainImageUrl,
+        ...galleryUrls
+      ].filter(Boolean) as string[];
     }
 
-    // Combine: variant primary image + product gallery images
-    // Filter out duplicates and empty values
-    const allImages = [primaryImage, ...productGalleryImages].filter((url, index, self) =>
-      url && self.indexOf(url) === index
-    );
+    // Final deduplication for safety
+    const seen = new Set<string>();
+    const result: string[] = [];
 
-    return allImages.length > 0 ? allImages : ['/placeholder-product.jpg'];
+    for (const url of combined) {
+      const normalized = url.trim();
+      if (normalized && !seen.has(normalized)) {
+        seen.add(normalized);
+        result.push(normalized);
+      }
+    }
+
+    return result.length > 0 ? result : ['/placeholder-product.jpg'];
   };
 
   const displayImages = getDisplayImages();
@@ -225,6 +283,18 @@ export const ProductDetailPage = () => {
                 // Get unique colors
                 const colors = hasColor
                   ? Array.from(new Set(product.variants.map(v => getAttr(v, 'Color')).filter(Boolean)))
+                    .sort((a, b) => {
+                      const colorPriority = ['white', 'black'];
+                      const priorityA = colorPriority.indexOf(a.toLowerCase());
+                      const priorityB = colorPriority.indexOf(b.toLowerCase());
+
+                      if (priorityA !== -1 && priorityB === -1) return -1;
+                      if (priorityA === -1 && priorityB !== -1) return 1;
+                      if (priorityA !== -1 && priorityB !== -1 && priorityA !== priorityB) {
+                        return priorityA - priorityB;
+                      }
+                      return a.localeCompare(b);
+                    })
                   : [];
 
                 // Filter variants based on selected color (if applicable)
