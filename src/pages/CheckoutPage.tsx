@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { createOrder, type CreateOrderData } from '../services/orders';
 import { createAddress, getAddresses, type CustomerAddress } from '../services/profiles';
+import { ZIP_CODES } from '../data/ph-zipcodes';
 import { getShippingRate } from '../services/shipping';
 import { formatPrice } from '../utils/currency';
 import { Button } from '../components/common/Button';
@@ -118,7 +119,7 @@ export const CheckoutPage = () => {
 
     try {
       // Map cart items to CreateOrderData format
-      const orderItems = cart.items.map(item => ({
+      const orderItems = cart.items.map((item: any) => ({
         product_id: Number(item.product_id),
         variant_id: item.variant_id ? Number(item.variant_id) : undefined,
         product_name: item.product?.name || 'Unknown Product',
@@ -341,16 +342,18 @@ export const CheckoutPage = () => {
                           defaultProvince={shippingInfo.province}
                           defaultCity={shippingInfo.city}
                           onSelect={(addr) => {
+                            const zipCode = ZIP_CODES[addr.province.toUpperCase()]?.[addr.city.toUpperCase()] || '';
                             setShippingInfo(prev => ({
                               ...prev,
                               city: addr.city,
                               province: addr.province,
-                              postalCode: ''
+                              postalCode: zipCode || prev.postalCode
                             }));
                           }}
                         />
                         <Input
-                          label="Postal Code (Optional)"
+                          label="Postal Code"
+                          required
                           value={shippingInfo.postalCode}
                           onChange={(e) => setShippingInfo({ ...shippingInfo, postalCode: e.target.value })}
                         />
@@ -363,7 +366,7 @@ export const CheckoutPage = () => {
                         fullWidth
                         size="lg"
                         onClick={handleShippingSubmit}
-                        disabled={!shippingInfo.city || !shippingInfo.address || !shippingInfo.fullName}
+                        disabled={!shippingInfo.city || !shippingInfo.address || !shippingInfo.fullName || !shippingInfo.phone || !shippingInfo.postalCode}
                       >
                         Continue to Payment
                       </Button>
